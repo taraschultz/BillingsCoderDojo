@@ -15,14 +15,14 @@ namespace BillingsCoderDojo.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+			ViewBag.Message = "CoderDojo is about encouraging creativity and having fun in a relaxed, social environment.";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Billings CoderDojo Contact";
 
             return View();
         }
