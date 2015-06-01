@@ -30,19 +30,6 @@ namespace BillingsCoderDojo.Migrations
             //    );
             //
 
-            var passwordHash = new PasswordHasher();
-            string password = passwordHash.HashPassword("CoderDojo123");
-
-            context.Users.AddOrUpdate(
-                p => p.UserName,
-                new ApplicationUser
-                {
-                    UserName = "MentorTara",
-                    PasswordHash = password,
-                    Email = "tara.dadah@gmail.com",
-                    SecurityStamp = Guid.NewGuid().ToString()
-                });
-
             //if (context.Roles.FirstOrDefault(role => role.Name == "Administrators") == null)
             //{
             //    context.Roles.Add(new IdentityRole
@@ -68,15 +55,15 @@ namespace BillingsCoderDojo.Migrations
                 Name = "Students"
             });
 
-            var mentorTaraUserId = context.Users.FirstOrDefault(userName => userName.UserName == "MentorTara").Id;
-            if(context.Roles.FirstOrDefault(role => role.Name == "Administrators").Users == null
-              || context.Roles.FirstOrDefault(role => role.Name == "Administrators").Users.FirstOrDefault(user => user.UserId == mentorTaraUserId ) == null)
-            {
-                var userStore = new UserStore<ApplicationUser>(context);
-                var userManager = new UserManager<ApplicationUser>(userStore);
+            //var mentorTaraUserId = context.Users.FirstOrDefault(userName => userName.UserName == "MentorTara").Id;
+            //if(context.Roles.FirstOrDefault(role => role.Name == "Administrators").Users == null
+            //  || context.Roles.FirstOrDefault(role => role.Name == "Administrators").Users.FirstOrDefault(user => user.UserId == mentorTaraUserId ) == null)
+            //{
+            //    var userStore = new UserStore<ApplicationUser>(context);
+            //    var userManager = new UserManager<ApplicationUser>(userStore);
 
-                userManager.AddToRole(mentorTaraUserId, "Administrators");
-            }
+            //    userManager.AddToRole(mentorTaraUserId, "Administrators");
+            //}
         }
     }
 }
