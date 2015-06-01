@@ -76,5 +76,12 @@
                     </form>
                 }*@
         </dd>
+        @if(User.IsInRole("Administrators"))
+        {
+        <dt>User/Roles</dt>
+        <dd>
+            @Html.ActionLink("Add users to roles.", "AddUserToRole")
+        </dd>
+        }
     </dl>
 </div>

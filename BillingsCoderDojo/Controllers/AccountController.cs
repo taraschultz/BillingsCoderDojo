@@ -21,10 +21,11 @@ namespace BillingsCoderDojo.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
         }
 
         public ApplicationUserManager UserManager
@@ -37,6 +38,16 @@ namespace BillingsCoderDojo.Controllers
             {
                 _userManager = value;
             }
+        }
+
+        private ApplicationRoleManager roleManager;
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return this.roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set { this.roleManager = value; }
         }
 
         //

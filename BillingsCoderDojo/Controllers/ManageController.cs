@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BillingsCoderDojo.Models;
+using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BillingsCoderDojo.Controllers
 {
@@ -33,6 +35,16 @@ namespace BillingsCoderDojo.Controllers
             {
                 _userManager = value;
             }
+        }
+
+        private ApplicationRoleManager roleManager;
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return this.roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set { this.roleManager = value; }
         }
 
         //
@@ -309,6 +321,65 @@ namespace BillingsCoderDojo.Controllers
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        //
+        // GET: /Manage/AddUserToRole
+        [Authorize(Roles = "Administrators")]
+        public ActionResult AddUserToRole()
+        {
+            var users = new List<SelectListItem>();
+            var roles = new List<SelectListItem>();
+
+            foreach(var user in UserManager.Users)
+            {
+                users.Add(new SelectListItem
+                {
+                    Value = user.Id,
+                    Text = user.UserName
+                });
+            }
+
+            foreach(var role in RoleManager.Roles)
+            {
+                roles.Add(new SelectListItem
+                {
+                    Value = role.Name,
+                    Text = role.Name
+                });
+            }
+
+            var model = new UserRoleViewModel
+            {
+                Usernames = users,
+                Roles = roles
+            };
+
+            return View(model);
+        }
+
+        //
+        // POST: /Manage/Register
+        [HttpPost]
+        [Authorize(Roles = "Administrators")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddUserToRole(UserRoleViewModel model)
+        {
+            ModelState.Remove("Usernames");
+            ModelState.Remove("Roles");
+
+            if (ModelState.IsValid)
+            {
+                var result = await UserManager.AddToRoleAsync(model.SelectedUserId, model.SelectedRole);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Manage");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("AddUserToRole", "Manage");
         }
 
 #region Helpers

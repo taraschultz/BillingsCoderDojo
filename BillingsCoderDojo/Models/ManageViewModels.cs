@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BillingsCoderDojo.Models
 {
@@ -82,5 +83,22 @@ namespace BillingsCoderDojo.Models
     {
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
+    }
+
+    public class UserRoleViewModel
+    {
+        [DataType(DataType.Text)]
+        [Display(Name = "Usernames")]
+        public IEnumerable<System.Web.Mvc.SelectListItem> Usernames { get; set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "Roles")]
+        public IEnumerable<System.Web.Mvc.SelectListItem> Roles { get; set; }
+
+        //[Required]
+        public string SelectedUserId { get; set; }
+
+        //[Required]
+        public string SelectedRole { get; set; }
     }
 }
