@@ -26,7 +26,12 @@ namespace BillingsCoderDojo.Controllers
                                   SignInTime = signIns.LogTime
                               };
 
-            var signInSheetList = signInSheet.ToList().Select(s => new SignInReportViewModel{Username = s.Username, SignInTime = s.SignInTime});
+            var signInSheetList = signInSheet.ToList().Select(s => 
+                new SignInReportViewModel
+                {
+                    Username = s.Username, 
+                    SignInTime = TimeZoneInfo.ConvertTimeFromUtc( TimeZoneInfo.ConvertTimeToUtc(s.SignInTime), TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"))
+                });
 
             return View(signInSheetList);
         }
