@@ -246,30 +246,31 @@ namespace BillingsCoderDojo.Controllers
 
         //
         // GET: /Account/ResetPassword
-        [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        [Authorize(Roles = "Administrators")]
+        public ActionResult ResetPassword()
         {
-            return code == null ? View("Error") : View();
+            return View();
         }
 
         //
         // POST: /Account/ResetPassword
         [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrators")]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = await UserManager.FindByNameAsync(model.Username);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            var token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+            var result = await UserManager.ResetPasswordAsync(user.Id, token, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
