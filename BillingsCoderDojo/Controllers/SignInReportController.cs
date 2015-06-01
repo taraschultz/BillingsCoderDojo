@@ -26,7 +26,9 @@ namespace BillingsCoderDojo.Controllers
                                   SignInTime = signIns.LogTime
                               };
 
-            return View(signInSheet.ToList());
+            var signInSheetList = signInSheet.ToList().Select(s => new SignInReportViewModel{Username = s.Username, SignInTime = s.SignInTime});
+
+            return View(signInSheetList);
         }
 
         // POST: SignInReport
