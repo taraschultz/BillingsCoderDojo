@@ -40,7 +40,7 @@ namespace BillingsCoderDojo.Controllers
 
                 db.SignInModels.Add(signInModels);
                 db.SaveChanges();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("SignIn", "SuccessfulSignIn");
             }
 
             return View(signInModels);

@@ -301,6 +301,7 @@
     <Content Include="Views\SignIn\Index.cshtml" />
     <Content Include="Views\SignInReport\Index.cshtml" />
     <Content Include="Views\Manage\AddUserToRole.cshtml" />
+    <Content Include="Views\SignIn\SuccessfulSignIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
